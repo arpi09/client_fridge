@@ -1,7 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
+import { SignOutButton } from "../components/SignOutButton";
 import { auth } from "../firebase";
+import {
+  StyledHomeMainContainer,
+  StyledHomeHeaderContainer,
+  StyledHomeImage,
+  StyledHeaderInfo,
+} from "./styles";
 
 const Home = () => {
   const history = useHistory();
@@ -23,32 +30,16 @@ const Home = () => {
     auth.signOut();
   };
 
-  console.log(user)
-
   return (
-    <div>
-      <div>
-        <div
-          style={{
-            background: `url(${photoURL}) no-repeat center center`,
-            backgroundSize: "cover",
-            height: "200px",
-            width: "200px",
-          }}
-        ></div>
-        <div>
+    <StyledHomeMainContainer>
+      <StyledHomeHeaderContainer>
+        <StyledHeaderInfo>
           <h2>{displayName}</h2>
-          <h3>{email}</h3>
-        </div>
-      </div>
-      <button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Sign out
-      </button>
-    </div>
+          <StyledHomeImage src={photoURL} alt="Profile Image" />
+          <SignOutButton onClick={signOut} />
+        </StyledHeaderInfo>
+      </StyledHomeHeaderContainer>
+    </StyledHomeMainContainer>
   );
 };
 
