@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
@@ -9,9 +9,14 @@ const Home = () => {
   const user = useContext(UserContext);
   const { displayName, email } = user || { displayName: "", email: "" };
 
+  useEffect(() => {
+    if (user === null || user === {}) {
+      history.push("/login");
+    }
+  }, [user]);
+
   const signOut = () => {
     auth.signOut();
-    history.push("/login");
   };
 
   return (

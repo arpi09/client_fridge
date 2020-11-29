@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { signInWithGoogle, auth } from "../firebase";
+import { UserContext } from "../providers/UserProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const history = useHistory();
-  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+  const user = useContext(UserContext);
+
+  const signInWithEmailAndPasswordHandler = (event) => {
+    event.preventDefault();
+
+    auth.signInWithEmailAndPassword(email, password).catch((error) => {
+      setError("Error signing in with password and email!");
+      console.error("Error signing in with password and email", error);
+    });
+  };
+
+  const signInWithGoogleClick = (event) => {
     event.preventDefault();
 
     signInWithGoogle();
-    history.push("/");
   };
 
   const onChangeHandler = (event) => {
@@ -24,9 +35,11 @@ const Login = () => {
     }
   };
 
-  // auth.onAuthStateChanged((userAuth) => {
-  //   <Redirect to="/" />
-  // });
+  useEffect(() => {
+    if (user !== {} && user !== null) {
+      history.push("/");
+    }
+  }, [user]);
 
   return (
     <div>
@@ -63,7 +76,13 @@ const Login = () => {
           </button>
         </form>
         <p>or</p>
-        <button>Sign in with Google</button>
+        <button
+          onClick={(event) => {
+            signInWithGoogleClick(event);
+          }}
+        >
+          Sign in with Google
+        </button>
         <p>
           Don't have an account? <Link to="signUp">Sign up here</Link> <br />{" "}
           <Link to="passwordReset">Forgot Password?</Link>
