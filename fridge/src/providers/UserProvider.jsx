@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 export const UserContext = createContext({ user: null });
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {

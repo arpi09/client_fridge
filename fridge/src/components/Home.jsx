@@ -7,10 +7,14 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { displayName, email } = user || { displayName: "", email: "" };
+  const { displayName, email, photoURL } = user || {
+    displayName: "",
+    email: "",
+    photoURL: "",
+  };
 
   useEffect(() => {
-    if (user === null || user === {}) {
+    if (user === null) {
       history.push("/login");
     }
   }, [user]);
@@ -19,12 +23,14 @@ const Home = () => {
     auth.signOut();
   };
 
+  console.log(user)
+
   return (
     <div>
       <div>
         <div
           style={{
-            background: `url(https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png)  no-repeat center center`,
+            background: `url(${photoURL}) no-repeat center center`,
             backgroundSize: "cover",
             height: "200px",
             width: "200px",
