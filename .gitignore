@@ -1,3 +1,26 @@
-fridge/node_modules
-
 .DS_Store
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+fridge/node_modules
+fridge/.pnp
+fridge/.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+fridge/.DS_Store
+fridge/.env
+fridge/.env.local
+fridge/.env.development.local
+fridge/.env.test.local
+fridge/.env.production.local
+
+fridge/npm-debug.log*
+fridge/yarn-debug.log*
+fridge/yarn-error.log*

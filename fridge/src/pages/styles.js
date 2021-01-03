@@ -20,6 +20,10 @@ export const StyledHomeMainContainer = styled.div`
   height: 100%;
   justify-content: center;
   background-color: #92b39e;
+
+  .MuiDataGrid-root {
+    background-color: #fff;
+  }
 `;
 
 export const StyledHomeHeaderContainer = styled.div`
@@ -32,7 +36,7 @@ export const StyledHomeHeaderContainer = styled.div`
   background-color: #transparent;
   position: absolute;
   top: 0px;
-  padding: 1rem;
+  padding-top: 1rem;
 `;
 
 export const StyledHomeImage = styled.img`

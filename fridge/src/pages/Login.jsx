@@ -41,7 +41,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (user !== null) {
+    if (user.userInfo !== null) {
       if (Object.keys(user).length !== 0) {
         history.push("/");
       }
