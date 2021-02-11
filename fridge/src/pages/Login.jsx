@@ -20,7 +20,6 @@ const Login = () => {
 
     auth.signInWithEmailAndPassword(email, password).catch((error) => {
       setError("Error signing in with password and email!");
-      console.error("Error signing in with password and email", error);
     });
   };
 
@@ -41,11 +40,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (user.userInfo !== null) {
-      if (Object.keys(user).length !== 0) {
-        history.push("/");
-      }
+    if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
+      history.push("/");
     }
+    console.log(user)
   }, [user]);
 
   return (

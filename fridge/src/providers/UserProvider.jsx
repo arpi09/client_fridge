@@ -1,20 +1,49 @@
-import React, { Component, createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 
-export const UserContext = createContext({ userInfo: {}, groceries: [] });
+export const UserContext = createContext({
+  tokenId: null,
+  userInfo: {},
+  groceries: [],
+});
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ userInfo: {}, groceries: [] });
+  const [user, setUser] = useState({
+    tokenId: null,
+    userInfo: {},
+    groceries: [],
+  });
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
-      setUser({ userInfo: userAuth, groceries: [] })
+      setUser({ tokenId: null, userInfo: userAuth, groceries: [] });
 
-      fetch(
-        "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/1/fridge/1/groceries"
-      )
-        .then((response) => response.json())
-        .then((data) => setUser({ userInfo: userAuth, groceries: data }));
+      userAuth &&
+        userAuth
+          .getIdToken(false)
+          .then((idToken) => {
+            fetch(
+              "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/1/fridge/1/groceries",
+              {
+                method: "GET",
+                headers: {
+                  Authorization: idToken,
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) =>
+                setUser({
+                  tokenId: idToken,
+                  userInfo: userAuth,
+                  groceries: data,
+                })
+              );
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     });
   }, []);
 

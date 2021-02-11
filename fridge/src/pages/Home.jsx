@@ -35,7 +35,8 @@ const Home = () => {
     { field: "bestBefore", headerName: "Best Before", width: 130 },
   ];
 
-  console.log(groceries)
+  console.log(groceries);
+  console.log(user);
 
   return (
     <StyledHomeMainContainer>
