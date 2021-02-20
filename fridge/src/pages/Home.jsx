@@ -15,7 +15,7 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { userInfo, groceries } = user || {
+  const { userInfo, groceries, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
 
@@ -27,6 +27,21 @@ const Home = () => {
 
   const signOut = () => {
     auth.signOut();
+  };
+
+  const test = () => {
+    console.log("iasdiuashdsiu");
+    console.log(tokenId);
+    fetch(
+      "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/groceries",
+      {
+        method: "POST",
+        headers: {
+          Authorization: tokenId,
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
 
   const columns = [
@@ -50,7 +65,7 @@ const Home = () => {
         </StyledHomeHeaderContainer>
       ) : null}
       <div style={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
-        <button>+</button>
+        <button onClick={() => test()}>+</button>
       </div>
       <div
         style={{

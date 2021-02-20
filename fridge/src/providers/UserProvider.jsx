@@ -23,7 +23,7 @@ const UserProvider = ({ children }) => {
           .getIdToken(false)
           .then((idToken) => {
             fetch(
-              "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/1/fridge/1/groceries",
+              "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/groceries",
               {
                 method: "GET",
                 headers: {
