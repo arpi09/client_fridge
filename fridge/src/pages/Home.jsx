@@ -19,7 +19,9 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { fridgeData, loading, setFridge } = useContext(FridgeContext);
+  const { fridgeData, loading, setFridge, addGrocery } = useContext(
+    FridgeContext
+  );
   const { userInfo, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
@@ -39,41 +41,25 @@ const Home = () => {
     auth.signOut();
   };
 
-  const test = () => {
-    setDisplayAddModal(true);
-    // fetch(
-    //   "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/grocery",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization: tokenId,
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-  };
-
   const columns = [
-    { field: "name", headerName: "Name", flex: 1},
-    { field: "bestBefore", headerName: "Best Before", flex: 1},
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "bestBefore", headerName: "Best Before", flex: 1 },
   ];
 
-  const modalContent = (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <h4 style={{ margin: "50px 0px 0px 20px" }}>Name</h4>
-      <Input />
-      <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
-      <Input />
-      <Button onClick={() => console.log("Adding!")} text="Add" />
-    </div>
-  );
+  const handleAddGrocery = (addModalNameText, addModalDateText) => {
+    const newGrocery = { name: addModalNameText, bestBefore: addModalDateText };
+    setDisplayAddModal(false);
+    addGrocery(newGrocery);
+  };
 
   return (
     <StyledHomeMainContainer>
       <Modal
         display={displayAddModal}
         title="Add grocery"
-        content={modalContent}
+        addFunction={(addModalNameText, addModalDateText) =>
+          handleAddGrocery(addModalNameText, addModalDateText)
+        }
         onClose={() => setDisplayAddModal()}
       />
       {userInfo !== null ? (
@@ -106,7 +92,7 @@ const Home = () => {
           })}
       </select>
       <div style={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
-        <button onClick={() => test()}>+</button>
+        <button onClick={() => setDisplayAddModal(true)}>+</button>
       </div>
       <div
         style={{

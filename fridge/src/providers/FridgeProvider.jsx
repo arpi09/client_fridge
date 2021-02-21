@@ -10,6 +10,7 @@ const FridgeProvider = ({ children }) => {
   const [fridgeData, setFridgeData] = useState({
     fridges: [],
     fridge: {},
+    selectedFridgeId: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -52,6 +53,7 @@ const FridgeProvider = ({ children }) => {
                     setFridgeData({
                       fridges: fridges,
                       fridge: data,
+                      selectedFridgeId: defaultFridgeId,
                     });
                     setLoading(false);
                   });
@@ -83,6 +85,36 @@ const FridgeProvider = ({ children }) => {
               setFridgeData((oldFridgeData) => ({
                 ...oldFridgeData,
                 fridge: data,
+                selectedFridgeId: fridgeId,
+              }));
+              setLoading(false);
+            });
+        });
+    });
+  };
+
+  const addGrocery = (grocery) => {
+    console.log(grocery);
+    auth.onAuthStateChanged((userAuth) => {
+      userAuth &&
+        userAuth.getIdToken(true).then((idToken) => {
+          setLoading(true);
+          fetch(
+            `http://localhost:5001/fridge-23daa/us-central1/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: idToken,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(grocery),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              setFridgeData((oldFridgeData) => ({
+                ...oldFridgeData,
+                fridge: data,
               }));
               setLoading(false);
             });
@@ -91,7 +123,9 @@ const FridgeProvider = ({ children }) => {
   };
 
   return (
-    <FridgeContext.Provider value={{ fridgeData, loading, setFridge }}>
+    <FridgeContext.Provider
+      value={{ fridgeData, loading, setFridge, addGrocery }}
+    >
       {children}
     </FridgeContext.Provider>
   );

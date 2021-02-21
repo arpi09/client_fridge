@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { Input } from "./Input";
+import { Button } from "./Button";
 
-export const Modal = ({ display, content, title, onClose }) => {
+export const Modal = ({ display, addFunction, title, onClose }) => {
+  const [addModalNameText, setAddModalNameText] = useState("");
+  const [addModalDateText, setAddModalDateText] = useState("");
+
   return (
     <div
       style={{
@@ -52,7 +57,22 @@ export const Modal = ({ display, content, title, onClose }) => {
           X
         </p>
         <h2 style={{ margin: 20 }}>{title}</h2>
-        <div>{content}</div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <h4 style={{ margin: "50px 0px 0px 20px" }}>Name</h4>
+          <Input
+            name="addNewGroceryNameInput"
+            onChange={(event) => setAddModalNameText(event.target.value)}
+          />
+          <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
+          <Input
+            name="addNewGroceryDateInput"
+            onChange={(event) => setAddModalDateText(event.target.value)}
+          />
+          <Button
+            onClick={() => addFunction(addModalNameText, addModalDateText)}
+            text="Add"
+          />
+        </div>
       </div>
     </div>
   );
