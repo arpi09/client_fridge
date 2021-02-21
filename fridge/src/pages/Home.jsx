@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
+import { FridgeContext } from "../providers/FridgeProvider";
 import { SignOutButton } from "../components/SignOutButton";
 import { auth } from "../firebase";
 import {
@@ -15,9 +16,13 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { userInfo, groceries, tokenId } = user || {
+  const { fridgeData, setFridge } = useContext(FridgeContext);
+  const { userInfo, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
+  const { fridge, fridges } = fridgeData;
+
+  const groceries = fridge && fridge.groceries;
 
   useEffect(() => {
     if (userInfo === null) {
@@ -30,10 +35,8 @@ const Home = () => {
   };
 
   const test = () => {
-    console.log("iasdiuashdsiu");
-    console.log(tokenId);
     fetch(
-      "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/groceries",
+      "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/grocery",
       {
         method: "POST",
         headers: {
@@ -50,9 +53,6 @@ const Home = () => {
     { field: "bestBefore", headerName: "Best Before", width: 130 },
   ];
 
-  console.log(groceries);
-  console.log(user);
-
   return (
     <StyledHomeMainContainer>
       {userInfo !== null ? (
@@ -64,26 +64,38 @@ const Home = () => {
           </StyledHeaderInfo>
         </StyledHomeHeaderContainer>
       ) : null}
+      <select name="fridges" onChange={(e) => setFridge(e.target.value)}>
+        {fridges &&
+          fridges.map((fridge) => {
+            return (
+              <option key={fridge.id} value={fridge.id}>
+                {fridge.name}
+              </option>
+            );
+          })}
+      </select>
       <div style={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
         <button onClick={() => test()}>+</button>
       </div>
-      <div
-        style={{
-          display: "flex",
-          height: "100%",
-          width: "100%",
-          width: "80%",
-          height: "50%",
-        }}
-      >
-        <DataGrid
-          rows={groceries}
-          columns={columns}
-          pageSize={5}
-          checkboxSelection
-          autoPageSize
-        />
-      </div>
+      {groceries && (
+        <div
+          style={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            width: "80%",
+            height: "50%",
+          }}
+        >
+          <DataGrid
+            rows={groceries}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            autoPageSize
+          />
+        </div>
+      )}
     </StyledHomeMainContainer>
   );
 };

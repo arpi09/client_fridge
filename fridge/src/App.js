@@ -2,6 +2,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import UserProvider from "./providers/UserProvider";
+import FridgeProvider from "./providers/FridgeProvider";
 import LoadingProvider from "./providers/LoadingProvider";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -16,7 +17,9 @@ function App() {
                 <Login />
               </Route>
               <Route path="/">
-                <Home />
+                <FridgeProvider>
+                  <Home />
+                </FridgeProvider>
               </Route>
             </Switch>
           </div>
