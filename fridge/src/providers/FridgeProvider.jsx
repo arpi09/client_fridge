@@ -94,7 +94,6 @@ const FridgeProvider = ({ children }) => {
   };
 
   const addGrocery = (grocery) => {
-    console.log(grocery);
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth.getIdToken(true).then((idToken) => {
