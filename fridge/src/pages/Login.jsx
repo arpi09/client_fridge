@@ -43,7 +43,6 @@ const Login = () => {
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
       history.push("/");
     }
-    console.log(user)
   }, [user]);
 
   return (

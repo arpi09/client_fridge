@@ -54,9 +54,8 @@ const Home = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Name", width: 130 },
-    { field: "bestBefore", headerName: "Best Before", width: 130 },
+    { field: "name", headerName: "Name", flex: 1},
+    { field: "bestBefore", headerName: "Best Before", flex: 1},
   ];
 
   const modalContent = (
