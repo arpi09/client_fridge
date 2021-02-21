@@ -1,8 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import { FridgeContext } from "../providers/FridgeProvider";
 import { SignOutButton } from "../components/SignOutButton";
+import { Button } from "../components/Button";
+import { Input } from "../components/Input";
+import { Modal } from "../components/Modal";
 import { auth } from "../firebase";
 import {
   StyledHomeMainContainer,
@@ -16,13 +19,15 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { fridgeData, setFridge } = useContext(FridgeContext);
+  const { fridgeData, loading, setFridge } = useContext(FridgeContext);
   const { userInfo, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
   const { fridge, fridges } = fridgeData;
 
-  const groceries = fridge && fridge.groceries;
+  const groceries = fridge.groceries || [];
+
+  const [displayAddModal, setDisplayAddModal] = useState(false);
 
   useEffect(() => {
     if (userInfo === null) {
@@ -35,16 +40,17 @@ const Home = () => {
   };
 
   const test = () => {
-    fetch(
-      "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/grocery",
-      {
-        method: "POST",
-        headers: {
-          Authorization: tokenId,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    setDisplayAddModal(true);
+    // fetch(
+    //   "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/l49C4CTkVgbHSF7iE54P/grocery",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       Authorization: tokenId,
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
   };
 
   const columns = [
@@ -53,8 +59,24 @@ const Home = () => {
     { field: "bestBefore", headerName: "Best Before", width: 130 },
   ];
 
+  const modalContent = (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h4 style={{ margin: "50px 0px 0px 20px" }}>Name</h4>
+      <Input />
+      <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
+      <Input />
+      <Button onClick={() => console.log("Adding!")} text="Add" />
+    </div>
+  );
+
   return (
     <StyledHomeMainContainer>
+      <Modal
+        display={displayAddModal}
+        title="Add grocery"
+        content={modalContent}
+        onClose={() => setDisplayAddModal()}
+      />
       {userInfo !== null ? (
         <StyledHomeHeaderContainer>
           <StyledHeaderInfo>
@@ -64,7 +86,17 @@ const Home = () => {
           </StyledHeaderInfo>
         </StyledHomeHeaderContainer>
       ) : null}
-      <select name="fridges" onChange={(e) => setFridge(e.target.value)}>
+      <select
+        name="fridges"
+        onChange={(e) => setFridge(e.target.value)}
+        style={{
+          borderWidth: "0px",
+          borderRadius: "5px",
+          width: "15rem",
+          height: "3rem",
+          fontSize: "18px",
+        }}
+      >
         {fridges &&
           fridges.map((fridge) => {
             return (
@@ -77,25 +109,24 @@ const Home = () => {
       <div style={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
         <button onClick={() => test()}>+</button>
       </div>
-      {groceries && (
-        <div
-          style={{
-            display: "flex",
-            height: "100%",
-            width: "100%",
-            width: "80%",
-            height: "50%",
-          }}
-        >
-          <DataGrid
-            rows={groceries}
-            columns={columns}
-            pageSize={5}
-            checkboxSelection
-            autoPageSize
-          />
-        </div>
-      )}
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+          width: "80%",
+          height: "50%",
+        }}
+      >
+        <DataGrid
+          rows={groceries}
+          columns={columns}
+          pageSize={5}
+          checkboxSelection
+          autoPageSize
+          loading={loading}
+        />
+      </div>
     </StyledHomeMainContainer>
   );
 };

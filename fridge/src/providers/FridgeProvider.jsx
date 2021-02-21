@@ -10,16 +10,66 @@ const FridgeProvider = ({ children }) => {
   const [fridgeData, setFridgeData] = useState({
     fridges: [],
     fridge: {},
-    selectedFridge: null,
   });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
-      userAuth
-        .getIdToken(true)
-        .then((idToken) => {
+      userAuth &&
+        userAuth
+          .getIdToken(true)
+          .then((idToken) => {
+            setLoading(true);
+            fetch(
+              "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridges",
+              {
+                method: "GET",
+                headers: {
+                  Authorization: idToken,
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => data)
+              .then((data) => {
+                const fridges = data;
+                const defaultFridgeId = fridges[0].id;
+
+                fetch(
+                  `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${defaultFridgeId}`,
+                  {
+                    method: "GET",
+                    headers: {
+                      Authorization: idToken,
+                      "Content-Type": "application/json",
+                    },
+                  }
+                )
+                  .then((response) => response.json())
+                  .then((data) => {
+                    setFridgeData({
+                      fridges: fridges,
+                      fridge: data,
+                    });
+                    setLoading(false);
+                  });
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    });
+  }, []);
+
+  const setFridge = (fridgeId) => {
+    auth.onAuthStateChanged((userAuth) => {
+      userAuth &&
+        userAuth.getIdToken(true).then((idToken) => {
+          setLoading(true);
           fetch(
-            "http://localhost:5001/fridge-23daa/us-central1/app/api/user/fridges",
+            `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeId}`,
             {
               method: "GET",
               headers: {
@@ -29,65 +79,19 @@ const FridgeProvider = ({ children }) => {
             }
           )
             .then((response) => response.json())
-            .then((data) => data)
             .then((data) => {
-              const fridges = data;
-              const defaultFridgeId = fridges[0].id;
-
-              fetch(
-                `http://localhost:5001/fridge-23daa/us-central1/app/api/user/fridge/${defaultFridgeId}`,
-                {
-                  method: "GET",
-                  headers: {
-                    Authorization: idToken,
-                    "Content-Type": "application/json",
-                  },
-                }
-              )
-                .then((response) => response.json())
-                .then((data) => {
-                  console.log(data);
-                  setFridgeData({
-                    fridges: fridges,
-                    fridge: data,
-                  });
-                });
+              setFridgeData((oldFridgeData) => ({
+                ...oldFridgeData,
+                fridge: data,
+              }));
+              setLoading(false);
             });
-        })
-        .catch((error) => {
-          console.log(error);
         });
-    });
-  }, []);
-
-  const setFridge = (id) => {
-    auth.onAuthStateChanged((userAuth) => {
-      userAuth.getIdToken(true).then((idToken) => {
-        console.log(id);
-        fetch(
-          `http://localhost:5001/fridge-23daa/us-central1/app/api/user/fridge/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: idToken,
-              "Content-Type": "application/json",
-            },
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            setFridgeData((oldFridgeData) => ({
-              ...oldFridgeData,
-              fridge: data,
-            }));
-          });
-      });
     });
   };
 
   return (
-    <FridgeContext.Provider value={{ fridgeData, setFridge }}>
+    <FridgeContext.Provider value={{ fridgeData, loading, setFridge }}>
       {children}
     </FridgeContext.Provider>
   );

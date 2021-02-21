@@ -4,7 +4,6 @@ import { auth } from "../firebase";
 export const UserContext = createContext({
   tokenId: null,
   userInfo: {},
-  groceries: [],
 });
 
 const UserProvider = ({ children }) => {
@@ -15,18 +14,19 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
-      userAuth &&
-        userAuth
-          .getIdToken(false)
-          .then((idToken) => {
-            setUser({
-              tokenId: idToken,
-              userInfo: userAuth,
-            });
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      userAuth
+        ? userAuth
+            .getIdToken(false)
+            .then((idToken) => {
+              setUser({
+                tokenId: idToken,
+                userInfo: userAuth,
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+        : setUser({ tokenId: null, userInfo: userAuth });
     });
   }, []);
 

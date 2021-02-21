@@ -7,7 +7,8 @@ const StyledInput = styled.input`
   width: 20rem;
   margin: 1rem;
   padding: 1rem;
-  border-width: 0px;
+  border-width: 1px;
+  border-color: #92b39e;
 `;
 
 export const Input = ({ type, name, value, placeholder, id, onChange }) => {
