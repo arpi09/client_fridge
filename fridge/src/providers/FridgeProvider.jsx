@@ -125,9 +125,37 @@ const FridgeProvider = ({ children }) => {
     });
   };
 
+  const deleteGrocery = (groceries) => {
+    auth.onAuthStateChanged((userAuth) => {
+      userAuth &&
+        userAuth.getIdToken(true).then((idToken) => {
+          setLoading(true);
+          fetch(
+            `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: idToken,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ groceries: groceries }),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              setFridgeData((oldFridgeData) => ({
+                ...oldFridgeData,
+                fridge: data,
+              }));
+              setLoading(false);
+            });
+        });
+    });
+  };
+
   return (
     <FridgeContext.Provider
-      value={{ fridgeData, loading, setFridge, addGrocery }}
+      value={{ fridgeData, loading, setFridge, addGrocery, deleteGrocery }}
     >
       {children}
     </FridgeContext.Provider>

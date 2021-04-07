@@ -22,9 +22,13 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { fridgeData, loading, setFridge, addGrocery } = useContext(
-    FridgeContext
-  );
+  const {
+    fridgeData,
+    loading,
+    setFridge,
+    addGrocery,
+    deleteGrocery,
+  } = useContext(FridgeContext);
   const { userInfo, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
@@ -32,7 +36,11 @@ const Home = () => {
 
   const groceries = fridge.groceries || [];
 
+  console.log(groceries);
+
   const [displayAddModal, setDisplayAddModal] = useState(false);
+
+  const [selectedGroceries, setSelectedGroceries] = useState([]);
 
   useEffect(() => {
     if (userInfo === null) {
@@ -97,6 +105,9 @@ const Home = () => {
           <StyledAddButton onClick={() => setDisplayAddModal(true)}>
             +
           </StyledAddButton>
+          <StyledAddButton onClick={() => deleteGrocery(selectedGroceries)}>
+            remove
+          </StyledAddButton>
         </div>
         <div
           style={{
@@ -145,6 +156,9 @@ const Home = () => {
           checkboxSelection
           autoPageSize
           loading={loading}
+          onSelectionModelChange={(newSelection) => {
+            setSelectedGroceries(newSelection.selectionModel);
+          }}
         />
       </div>
     </StyledHomeMainContainer>
