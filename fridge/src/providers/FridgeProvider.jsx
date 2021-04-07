@@ -22,6 +22,7 @@ const FridgeProvider = ({ children }) => {
           .getIdToken(true)
           .then((idToken) => {
             setLoading(true);
+
             fetch(
               "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridges",
               {
@@ -33,30 +34,33 @@ const FridgeProvider = ({ children }) => {
               }
             )
               .then((response) => response.json())
-              .then((data) => data)
               .then((data) => {
                 const fridges = data;
-                const defaultFridgeId = fridges[0].id;
 
-                fetch(
-                  `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${defaultFridgeId}`,
-                  {
-                    method: "GET",
-                    headers: {
-                      Authorization: idToken,
-                      "Content-Type": "application/json",
-                    },
-                  }
-                )
-                  .then((response) => response.json())
-                  .then((data) => {
-                    setFridgeData({
-                      fridges: fridges,
-                      fridge: data,
-                      selectedFridgeId: defaultFridgeId,
+                if (data.length !== 0) {
+                  const defaultFridgeId = fridges[0].id;
+
+                  fetch(
+                    `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${defaultFridgeId}`,
+                    {
+                      method: "GET",
+                      headers: {
+                        Authorization: idToken,
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  )
+                    .then((response) => response.json())
+                    .then((data) => {
+                      setFridgeData({
+                        fridges: fridges,
+                        fridge: data,
+                        selectedFridgeId: defaultFridgeId,
+                      });
+                      setLoading(false);
                     });
-                    setLoading(false);
-                  });
+                }
+                setLoading(false);
               });
           })
           .catch((error) => {
