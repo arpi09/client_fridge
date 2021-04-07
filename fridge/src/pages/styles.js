@@ -53,3 +53,22 @@ export const StyledHeaderInfo = styled.div`
   justify-content: center;
   margin-right: 1.5rem;
 `;
+
+export const StyledheaderTitleContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const StyledheaderTitle = styled.h2`
+  font-size: 42px;
+  margin-left: 2.5rem;
+`;
+
+export const StyledAddButton = styled.button`
+  height: 100%;
+  width: 4rem;
+  border-radius: 5px;
+  border-width: 0px;
+`;

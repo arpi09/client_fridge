@@ -12,6 +12,9 @@ import {
   StyledHomeHeaderContainer,
   StyledHomeImage,
   StyledHeaderInfo,
+  StyledheaderTitleContainer,
+  StyledheaderTitle,
+  StyledAddButton,
 } from "./styles";
 import { DataGrid } from "@material-ui/data-grid";
 
@@ -62,37 +65,69 @@ const Home = () => {
         }
         onClose={() => setDisplayAddModal()}
       />
-      {userInfo !== null ? (
+      {userInfo !== null && (
         <StyledHomeHeaderContainer>
+          <StyledheaderTitleContainer>
+            <StyledheaderTitle>My Fridge</StyledheaderTitle>
+          </StyledheaderTitleContainer>
           <StyledHeaderInfo>
-            <h2>{userInfo.displayName}</h2>
+            <h2 style={{ width: "max-content" }}>{userInfo.displayName}</h2>
             <StyledHomeImage src={userInfo.photoURL} alt="Profile Image" />
             <SignOutButton onClick={signOut} />
           </StyledHeaderInfo>
         </StyledHomeHeaderContainer>
-      ) : null}
-      <select
-        name="fridges"
-        onChange={(e) => setFridge(e.target.value)}
+      )}
+      <div
         style={{
-          borderWidth: "0px",
-          borderRadius: "5px",
-          width: "15rem",
-          height: "3rem",
-          fontSize: "18px",
+          display: "flex",
+          alignItems: "center",
+          width: "80%",
+          padding: 10,
         }}
       >
-        {fridges &&
-          fridges.map((fridge) => {
-            return (
-              <option key={fridge.id} value={fridge.id}>
-                {fridge.name}
-              </option>
-            );
-          })}
-      </select>
-      <div style={{ display: "flex", alignItems: "flex-start", width: "80%" }}>
-        <button onClick={() => setDisplayAddModal(true)}>+</button>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "flex-start",
+            width: "50%",
+            height: "100%",
+          }}
+        >
+          <StyledAddButton onClick={() => setDisplayAddModal(true)}>
+            +
+          </StyledAddButton>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            width: "50%",
+            height: "100%",
+          }}
+        >
+          <select
+            name="fridges"
+            onChange={(e) => setFridge(e.target.value)}
+            style={{
+              borderWidth: "0px",
+              borderRadius: "5px",
+              width: "15rem",
+              height: "3rem",
+              fontSize: "18px",
+            }}
+          >
+            {fridges &&
+              fridges.map((fridge) => {
+                return (
+                  <option key={fridge.id} value={fridge.id}>
+                    {fridge.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
       </div>
       <div
         style={{
