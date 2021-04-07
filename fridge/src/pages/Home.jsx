@@ -36,8 +36,6 @@ const Home = () => {
 
   const groceries = fridge.groceries || [];
 
-  console.log(groceries);
-
   const [displayAddModal, setDisplayAddModal] = useState(false);
 
   const [selectedGroceries, setSelectedGroceries] = useState([]);
