@@ -71,6 +71,8 @@ export const Modal = ({ display, addFunction, title, onClose }) => {
           <Button
             onClick={() => addFunction(addModalNameText, addModalDateText)}
             text="Add"
+            primary
+            disabled={addModalNameText === ""}
           />
         </div>
       </div>

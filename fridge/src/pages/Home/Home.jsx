@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../providers/UserProvider";
-import { FridgeContext } from "../providers/FridgeProvider";
-import { SignOutButton } from "../components/SignOutButton";
-import { Button } from "../components/Button";
-import { Input } from "../components/Input";
-import { Modal } from "../components/Modal";
-import { auth } from "../firebase";
+import { UserContext } from "../../providers/UserProvider";
+import { FridgeContext } from "../../providers/FridgeProvider";
+import { SignOutButton } from "../../components/SignOutButton";
+import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
+import { auth } from "../../firebase";
 import {
   StyledHomeMainContainer,
   StyledHomeHeaderContainer,
@@ -14,7 +13,6 @@ import {
   StyledHeaderInfo,
   StyledheaderTitleContainer,
   StyledheaderTitle,
-  StyledAddButton,
 } from "./styles";
 import { DataGrid } from "@material-ui/data-grid";
 
@@ -22,17 +20,13 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const {
-    fridgeData,
-    loading,
-    setFridge,
-    addGrocery,
-    deleteGrocery,
-  } = useContext(FridgeContext);
+  const { fridgeData, setFridge, addGrocery, deleteGrocery } = useContext(
+    FridgeContext
+  );
   const { userInfo, tokenId } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
-  const { fridge, fridges } = fridgeData;
+  const { fridge, fridges, loading } = fridgeData;
 
   const groceries = fridge.groceries || [];
 
@@ -61,6 +55,11 @@ const Home = () => {
     addGrocery(newGrocery);
   };
 
+  const handleDeleteGroceries = () => {
+    deleteGrocery(selectedGroceries);
+    setSelectedGroceries([]);
+  };
+
   return (
     <StyledHomeMainContainer>
       <Modal
@@ -78,7 +77,9 @@ const Home = () => {
           </StyledheaderTitleContainer>
           <StyledHeaderInfo>
             <h2 style={{ width: "max-content" }}>{userInfo.displayName}</h2>
-            <StyledHomeImage src={userInfo.photoURL} alt="Profile Image" />
+            {userInfo.photoURL && (
+              <StyledHomeImage src={userInfo.photoURL} alt="Profile Image" />
+            )}
             <SignOutButton onClick={signOut} />
           </StyledHeaderInfo>
         </StyledHomeHeaderContainer>
@@ -100,12 +101,17 @@ const Home = () => {
             height: "100%",
           }}
         >
-          <StyledAddButton onClick={() => setDisplayAddModal(true)}>
-            +
-          </StyledAddButton>
-          <StyledAddButton onClick={() => deleteGrocery(selectedGroceries)}>
-            remove
-          </StyledAddButton>
+          <Button
+            onClick={() => setDisplayAddModal(true)}
+            text="Add grocery"
+            primary
+          ></Button>
+          <Button
+            onClick={() => handleDeleteGroceries()}
+            text="Delete groceries"
+            secondary
+            disabled={selectedGroceries.length === 0}
+          ></Button>
         </div>
         <div
           style={{

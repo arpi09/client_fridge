@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { signInWithGoogle, auth } from "../firebase";
-import { UserContext } from "../providers/UserProvider";
-import { Input } from "../components/Input";
-import { SignInButton } from "../components/SignInButton";
-import { ThirdPartySignInButton } from "../components/ThirdPartySignInButton";
+import { signInWithGoogle, auth } from "../../firebase";
+import { UserContext } from "../../providers/UserProvider";
+import { Input } from "../../components/Input";
+import { SignInButton } from "../../components/SignInButton";
+import { ThirdPartySignInButton } from "../../components/ThirdPartySignInButton";
 import { StyledLoginMainContainer, StyledLoginHeaderText } from "./styles";
 import { FaGoogle } from "react-icons/fa";
 

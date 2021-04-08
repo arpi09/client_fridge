@@ -11,9 +11,8 @@ const FridgeProvider = ({ children }) => {
     fridges: [],
     fridge: {},
     selectedFridgeId: null,
+    loading: true,
   });
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
@@ -21,7 +20,7 @@ const FridgeProvider = ({ children }) => {
         userAuth
           .getIdToken(true)
           .then((idToken) => {
-            setLoading(true);
+            setFridgeData({ ...fridgeData, loading: true });
 
             fetch(
               "https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridges",
@@ -56,11 +55,10 @@ const FridgeProvider = ({ children }) => {
                         fridges: fridges,
                         fridge: data,
                         selectedFridgeId: defaultFridgeId,
+                        loading: false,
                       });
-                      setLoading(false);
                     });
                 }
-                setLoading(false);
               });
           })
           .catch((error) => {
@@ -73,7 +71,7 @@ const FridgeProvider = ({ children }) => {
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth.getIdToken(true).then((idToken) => {
-          setLoading(true);
+          setFridgeData({ ...fridgeData, loading: true });
           fetch(
             `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeId}`,
             {
@@ -90,8 +88,8 @@ const FridgeProvider = ({ children }) => {
                 ...oldFridgeData,
                 fridge: data,
                 selectedFridgeId: fridgeId,
+                loading: false,
               }));
-              setLoading(false);
             });
         });
     });
@@ -101,7 +99,7 @@ const FridgeProvider = ({ children }) => {
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth.getIdToken(true).then((idToken) => {
-          setLoading(true);
+          setFridgeData({ ...fridgeData, loading: true });
           fetch(
             `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
             {
@@ -118,8 +116,8 @@ const FridgeProvider = ({ children }) => {
               setFridgeData((oldFridgeData) => ({
                 ...oldFridgeData,
                 fridge: data,
+                loading: false,
               }));
-              setLoading(false);
             });
         });
     });
@@ -129,7 +127,7 @@ const FridgeProvider = ({ children }) => {
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth.getIdToken(true).then((idToken) => {
-          setLoading(true);
+          setFridgeData({ ...fridgeData, loading: true });
           fetch(
             `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
             {
@@ -146,8 +144,8 @@ const FridgeProvider = ({ children }) => {
               setFridgeData((oldFridgeData) => ({
                 ...oldFridgeData,
                 fridge: data,
+                loading: false,
               }));
-              setLoading(false);
             });
         });
     });
@@ -155,7 +153,7 @@ const FridgeProvider = ({ children }) => {
 
   return (
     <FridgeContext.Provider
-      value={{ fridgeData, loading, setFridge, addGrocery, deleteGrocery }}
+      value={{ fridgeData, setFridge, addGrocery, deleteGrocery }}
     >
       {children}
     </FridgeContext.Provider>
