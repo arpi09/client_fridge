@@ -41,7 +41,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
-      history.push("/");
+      history.push("/start");
     }
   }, [user]);
 

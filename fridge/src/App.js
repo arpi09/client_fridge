@@ -11,13 +11,13 @@ function App() {
       <Router>
         <div style={{ height: "100vh" }}>
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/">
+            <Route path="/start">
               <FridgeProvider>
                 <Home />
               </FridgeProvider>
+            </Route>
+            <Route path="/">
+              <Login />
             </Route>
           </Switch>
         </div>

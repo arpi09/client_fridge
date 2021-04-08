@@ -36,7 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     if (userInfo === null) {
-      history.push("/login");
+      history.push("/");
     }
   }, [user]);
 
