@@ -101,7 +101,7 @@ const FridgeProvider = ({ children }) => {
         userAuth.getIdToken(true).then((idToken) => {
           setFridgeData({ ...fridgeData, loading: true });
           fetch(
-            `http://localhost:5001/fridge-23daa/us-central1/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
+            `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
             {
               method: "POST",
               headers: {
