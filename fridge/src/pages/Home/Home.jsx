@@ -13,6 +13,7 @@ import {
   StyledHeaderInfo,
   StyledheaderTitleContainer,
   StyledheaderTitle,
+  StyledSliderContainer,
 } from "./styles";
 import { DataGrid } from "@material-ui/data-grid";
 
@@ -20,15 +21,19 @@ const Home = () => {
   const history = useHistory();
 
   const user = useContext(UserContext);
-  const { fridgeData, setFridge, addGrocery, deleteGrocery } = useContext(
-    FridgeContext
-  );
-  const { userInfo, tokenId } = user || {
+  const {
+    fridgeData,
+    setFridge,
+    addGrocery,
+    deleteGroceries,
+    updateGrocery,
+  } = useContext(FridgeContext);
+  const { userInfo } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
   const { fridge, fridges, loading } = fridgeData;
 
-  const groceries = fridge.groceries || [];
+  const [groceries, setGroceries] = useState([]);
 
   const [displayAddModal, setDisplayAddModal] = useState(false);
 
@@ -38,26 +43,80 @@ const Home = () => {
     if (userInfo === null) {
       history.push("/");
     }
-  }, [user]);
+  }, [history, userInfo]);
 
-  const signOut = () => {
-    auth.signOut();
-  };
+  useEffect(() => {
+    setGroceries(fridge.groceries);
+  }, [fridge]);
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "bestBefore", headerName: "Best Before", flex: 1 },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      disableClickEventBubbling: true,
+    },
+    {
+      field: "bestBefore",
+      headerName: "Best Before",
+      flex: 1,
+      disableClickEventBubbling: true,
+    },
+    {
+      field: "slider",
+      headerName: "Slider",
+      flex: 1,
+      disableClickEventBubbling: true,
+      renderCell: (params) => (
+        <StyledSliderContainer>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            defaultValue={params.row.amount || 0}
+            onMouseUp={(event) =>
+              handleSliderChanged(event.target.value, params.id)
+            }
+            className="slider"
+          />
+          <p>{params.row.amount}%</p>
+        </StyledSliderContainer>
+      ),
+    },
   ];
 
   const handleAddGrocery = (addModalNameText, addModalDateText) => {
     const newGrocery = { name: addModalNameText, bestBefore: addModalDateText };
+
     setDisplayAddModal(false);
     addGrocery(newGrocery);
   };
 
   const handleDeleteGroceries = () => {
-    deleteGrocery(selectedGroceries);
+    deleteGroceries(selectedGroceries);
     setSelectedGroceries([]);
+  };
+
+  const handleSliderChanged = (value, id) => {
+    const grocery = { amount: parseInt(value, 10), id: id };
+
+    const updatedGroceryIndex = groceries.findIndex((grocery) => {
+      return grocery.id === id;
+    });
+
+    let tempArray = [...groceries];
+    tempArray[updatedGroceryIndex] = {
+      ...tempArray[updatedGroceryIndex],
+      amount: parseInt(value, 10),
+    };
+
+    setGroceries(tempArray);
+
+    updateGrocery(grocery);
+  };
+
+  const signOut = () => {
+    auth.signOut();
   };
 
   return (
@@ -147,14 +206,12 @@ const Home = () => {
       <div
         style={{
           display: "flex",
-          height: "100%",
-          width: "100%",
           width: "80%",
           height: "50%",
         }}
       >
         <DataGrid
-          rows={groceries}
+          rows={groceries || []}
           columns={columns}
           pageSize={5}
           checkboxSelection

@@ -123,7 +123,7 @@ const FridgeProvider = ({ children }) => {
     });
   };
 
-  const deleteGrocery = (groceries) => {
+  const deleteGroceries = (groceries) => {
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth.getIdToken(true).then((idToken) => {
@@ -151,9 +151,42 @@ const FridgeProvider = ({ children }) => {
     });
   };
 
+  const updateGrocery = (grocery) => {
+    auth.onAuthStateChanged((userAuth) => {
+      userAuth &&
+        userAuth.getIdToken(true).then((idToken) => {
+          fetch(
+            `https://us-central1-fridge-23daa.cloudfunctions.net/app/api/user/fridge/${fridgeData.selectedFridgeId}/grocery`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: idToken,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ grocery: grocery }),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              setFridgeData((oldFridgeData) => ({
+                ...oldFridgeData,
+                fridge: data,
+                loading: false,
+              }));
+            });
+        });
+    });
+  };
+
   return (
     <FridgeContext.Provider
-      value={{ fridgeData, setFridge, addGrocery, deleteGrocery }}
+      value={{
+        fridgeData,
+        setFridge,
+        addGrocery,
+        deleteGroceries,
+        updateGrocery,
+      }}
     >
       {children}
     </FridgeContext.Provider>
