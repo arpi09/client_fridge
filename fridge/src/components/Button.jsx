@@ -51,7 +51,7 @@ export const Button = ({
       secondary={secondary}
       remove={remove}
       disabled={disabled}
-      width={width}
+      width={width || 5}
     >
       <StyledInnerContainer>{text}</StyledInnerContainer>
     </StyledButton>

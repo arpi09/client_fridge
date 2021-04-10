@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import DatePicker from "react-datepicker";
 
-export const Modal = ({ display, addFunction, title, onClose }) => {
+import "react-datepicker/dist/react-datepicker.css";
+
+export const AddGroceryModal = ({ display, addFunction, title, onClose }) => {
   const [addModalNameText, setAddModalNameText] = useState("");
-  const [addModalDateText, setAddModalDateText] = useState("");
+  const [addModalFullAmountText, setAddModalFullAmountText] = useState("");
+  const [addModalAmountTypetText, setAddModalAmountTypeText] = useState("");
+  const [bestBeforeDate, setBestBeforeDate] = useState(new Date());
+
+  const DATE_FORMAT = "yyyy/MM/dd";
 
   return (
     <div
@@ -63,13 +70,31 @@ export const Modal = ({ display, addFunction, title, onClose }) => {
             name="addNewGroceryNameInput"
             onChange={(event) => setAddModalNameText(event.target.value)}
           />
-          <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
+          <select>
+            <option>Volume</option>
+            <option>Weight</option>
+          </select>
+          <h4 style={{ margin: "50px 0px 0px 20px" }}>Full amount</h4>
           <Input
-            name="addNewGroceryDateInput"
-            onChange={(event) => setAddModalDateText(event.target.value)}
+            name="addNewGroceryNameInput"
+            onChange={(event) => setAddModalFullAmountText(event.target.value)}
+          />
+
+          <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
+          <DatePicker
+            selected={bestBeforeDate}
+            onChange={(date) => setBestBeforeDate(date)}
+            dateFormat={DATE_FORMAT}
           />
           <Button
-            onClick={() => addFunction(addModalNameText, addModalDateText)}
+            onClick={() =>
+              addFunction(
+                addModalNameText,
+                addModalFullAmountText,
+                addModalAmountTypetText,
+                bestBeforeDate
+              )
+            }
             text="Add"
             primary
             disabled={addModalNameText === ""}

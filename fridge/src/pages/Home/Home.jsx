@@ -4,7 +4,7 @@ import { UserContext } from "../../providers/UserProvider";
 import { FridgeContext } from "../../providers/FridgeProvider";
 import { SignOutButton } from "../../components/SignOutButton";
 import { Button } from "../../components/Button";
-import { Modal } from "../../components/Modal";
+import { AddGroceryModal } from "../../components/AddGroceryModal";
 import { auth } from "../../firebase";
 import {
   StyledHomeMainContainer,
@@ -16,6 +16,7 @@ import {
   StyledSliderContainer,
 } from "./styles";
 import { DataGrid } from "@material-ui/data-grid";
+import moment from "moment";
 
 const Home = () => {
   const history = useHistory();
@@ -39,8 +40,6 @@ const Home = () => {
 
   const [selectedGroceries, setSelectedGroceries] = useState([]);
 
-  console.log(userInfo);
-
   useEffect(() => {
     if (userInfo === null) {
       history.push("/");
@@ -48,6 +47,15 @@ const Home = () => {
   }, [history, userInfo]);
 
   useEffect(() => {
+    fridge.groceries =
+      fridge.groceries &&
+      fridge.groceries.map((grocery) => {
+        return {
+          ...grocery,
+          bestBefore: moment(grocery.bestBefore).format("YYYY-MM-DD"),
+        };
+      });
+
     setGroceries(fridge.groceries);
   }, [fridge]);
 
@@ -87,8 +95,18 @@ const Home = () => {
     },
   ];
 
-  const handleAddGrocery = (addModalNameText, addModalDateText) => {
-    const newGrocery = { name: addModalNameText, bestBefore: addModalDateText };
+  const handleAddGrocery = (
+    addModalNameText,
+    addModalFullAmountText,
+    addModalAmountTypetText,
+    bestBeforeDate
+  ) => {
+    const newGrocery = {
+      name: addModalNameText,
+      fullAmount: addModalFullAmountText,
+      amountType: addModalAmountTypetText,
+      bestBefore: bestBeforeDate,
+    };
 
     setDisplayAddModal(false);
     addGrocery(newGrocery);
@@ -123,11 +141,21 @@ const Home = () => {
 
   return (
     <StyledHomeMainContainer>
-      <Modal
+      <AddGroceryModal
         display={displayAddModal}
         title="Add grocery"
-        addFunction={(addModalNameText, addModalDateText) =>
-          handleAddGrocery(addModalNameText, addModalDateText)
+        addFunction={(
+          addModalNameText,
+          addModalFullAmountText,
+          addModalAmountTypetText,
+          bestBeforeDate
+        ) =>
+          handleAddGrocery(
+            addModalNameText,
+            addModalFullAmountText,
+            addModalAmountTypetText,
+            bestBeforeDate
+          )
         }
         onClose={() => setDisplayAddModal()}
       />
