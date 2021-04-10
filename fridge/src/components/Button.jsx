@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
-  width: 8rem;
+  width: ${(props) => props.width}rem;
   height: 3rem;
   margin: 0.5rem;
   background-color: ${(props) =>
@@ -10,7 +10,7 @@ const StyledButton = styled.button`
   background-color: ${(props) =>
     props.secondary && (props.disabled ? "#BEA69F" : "#A07163")};
   background-color: ${(props) =>
-    props.delete && (props.disabled ? "#e09b96" : "#e84c41")};
+    props.remove && (props.disabled ? "#dba7a7" : "#ff3b3b")};
   color: #fff;
   border-width: 0px;
   border-radius: 5px;
@@ -22,7 +22,9 @@ const StyledButton = styled.button`
   transition: 0.4s;
 
   &:hover {
-    background-color: "#564466";
+    background-color: ${(props) => !props.disabled && props.primary && "#9f89b3"};
+    background-color: ${(props) => !props.disabled && props.secondary && "#9f89b3"};
+    background-color: ${(props) => !props.disabled && props.remove && "#fc9595"};
   }
 `;
 
@@ -33,13 +35,23 @@ const StyledInnerContainer = styled.div`
   justify-content: center;
 `;
 
-export const Button = ({ onClick, text, disabled, primary, secondary }) => {
+export const Button = ({
+  onClick,
+  text,
+  disabled,
+  width,
+  primary,
+  secondary,
+  remove
+}) => {
   return (
     <StyledButton
       onClick={onClick}
       primary={primary}
       secondary={secondary}
+      remove={remove}
       disabled={disabled}
+      width={width}
     >
       <StyledInnerContainer>{text}</StyledInnerContainer>
     </StyledButton>

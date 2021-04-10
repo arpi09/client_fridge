@@ -39,6 +39,8 @@ const Home = () => {
 
   const [selectedGroceries, setSelectedGroceries] = useState([]);
 
+  console.log(userInfo);
+
   useEffect(() => {
     if (userInfo === null) {
       history.push("/");
@@ -135,7 +137,11 @@ const Home = () => {
             <StyledheaderTitle>My Fridge</StyledheaderTitle>
           </StyledheaderTitleContainer>
           <StyledHeaderInfo>
-            <h2 style={{ width: "max-content" }}>{userInfo.displayName}</h2>
+            <h2 style={{ width: "max-content" }}>
+              {userInfo.displayName === null
+                ? userInfo.email
+                : userInfo.displayName}
+            </h2>
             {userInfo.photoURL && (
               <StyledHomeImage src={userInfo.photoURL} alt="Profile Image" />
             )}
@@ -161,15 +167,17 @@ const Home = () => {
           }}
         >
           <Button
-            onClick={() => setDisplayAddModal(true)}
-            text="Add grocery"
-            primary
+            onClick={() => handleDeleteGroceries()}
+            text="Delete"
+            remove
+            disabled={selectedGroceries.length === 0}
+            width="5"
           ></Button>
           <Button
-            onClick={() => handleDeleteGroceries()}
-            text="Delete groceries"
-            secondary
-            disabled={selectedGroceries.length === 0}
+            onClick={() => setDisplayAddModal(true)}
+            text="Add"
+            primary
+            width="17"
           ></Button>
         </div>
         <div
