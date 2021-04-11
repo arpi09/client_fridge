@@ -2,8 +2,32 @@ import React, { useState } from "react";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import DatePicker from "react-datepicker";
+import styled from "styled-components";
 
 import "react-datepicker/dist/react-datepicker.css";
+
+const StyledSelect = styled.select`
+  border-radius: 5px;
+  height: 2rem;
+  width: 22rem;
+  margin: 1rem;
+  border-width: 1px;
+  border-color: #92b39e;
+  color: #000;
+  background-color: #fff;
+`;
+
+const StyledDatePickerContainer = styled.div`
+  input {
+    border-radius: 5px;
+    height: 2rem;
+    width: 20rem;
+    margin: 1rem;
+    padding: 1rem;
+    border-width: 1px;
+    border-color: #92b39e;
+  }
+`;
 
 export const AddGroceryModal = ({ display, addFunction, title, onClose }) => {
   const [addModalNameText, setAddModalNameText] = useState("");
@@ -40,12 +64,13 @@ export const AddGroceryModal = ({ display, addFunction, title, onClose }) => {
       <div
         style={{
           backgroundColor: "#ffffff",
-          height: "60vh",
-          width: "40vw",
+          height: "70vh",
+          width: "50vw",
           borderRadius: 5,
           position: "absolute",
           zIndex: 2,
           display: display ? "" : "none",
+          overflow: "auto",
         }}
       >
         <p
@@ -65,27 +90,33 @@ export const AddGroceryModal = ({ display, addFunction, title, onClose }) => {
         </p>
         <h2 style={{ margin: 20 }}>{title}</h2>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h4 style={{ margin: "50px 0px 0px 20px" }}>Name</h4>
+          <h4 style={{ margin: "10px 0px 0px 20px" }}>Name</h4>
           <Input
+            style={{}}
             name="addNewGroceryNameInput"
             onChange={(event) => setAddModalNameText(event.target.value)}
           />
-          <select>
+          <h4 style={{ margin: "10px 0px 0px 20px" }}>Amount type</h4>
+          <StyledSelect
+            value={addModalAmountTypetText}
+            onChange={(event) => setAddModalAmountTypeText(event.target.value)}
+          >
             <option>Volume</option>
             <option>Weight</option>
-          </select>
-          <h4 style={{ margin: "50px 0px 0px 20px" }}>Full amount</h4>
+          </StyledSelect>
+          <h4 style={{ margin: "10px 0px 0px 20px" }}>Full amount</h4>
           <Input
             name="addNewGroceryNameInput"
             onChange={(event) => setAddModalFullAmountText(event.target.value)}
           />
-
-          <h4 style={{ margin: "15px 0px 0px 20px" }}>BestBefore</h4>
-          <DatePicker
-            selected={bestBeforeDate}
-            onChange={(date) => setBestBeforeDate(date)}
-            dateFormat={DATE_FORMAT}
-          />
+          <h4 style={{ margin: "10px 0px 0px 20px" }}>BestBefore</h4>
+          <StyledDatePickerContainer>
+            <DatePicker
+              selected={bestBeforeDate}
+              onChange={(date) => setBestBeforeDate(date)}
+              dateFormat={DATE_FORMAT}
+            />
+          </StyledDatePickerContainer>
           <Button
             onClick={() =>
               addFunction(
