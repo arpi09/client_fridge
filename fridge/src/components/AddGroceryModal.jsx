@@ -32,7 +32,7 @@ const StyledDatePickerContainer = styled.div`
 export const AddGroceryModal = ({ display, addFunction, title, onClose }) => {
   const [addModalNameText, setAddModalNameText] = useState("");
   const [addModalFullAmountText, setAddModalFullAmountText] = useState("");
-  const [addModalAmountTypetText, setAddModalAmountTypeText] = useState("");
+  const [addModalAmountTypetText, setAddModalAmountTypeText] = useState("Volume");
   const [bestBeforeDate, setBestBeforeDate] = useState(new Date());
 
   const DATE_FORMAT = "yyyy/MM/dd";

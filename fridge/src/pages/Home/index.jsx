@@ -52,7 +52,7 @@ const Home = () => {
     setGroceries(fridge.groceries);
   }, [fridge]);
 
-  console.log(groceries)
+  console.log(groceries);
 
   const columns = [
     {
@@ -64,6 +64,18 @@ const Home = () => {
     {
       field: constants.GRID_COLUMN_FIELD_NAME_BEST_BEFORE,
       headerName: constants.GRID_COLUMN_HEADER_TITLE_BEST_BEFORE,
+      flex: 1,
+      disableClickEventBubbling: true,
+    },
+    {
+      field: "fullAmount",
+      headerName: "Full amount",
+      flex: 1,
+      disableClickEventBubbling: true,
+    },
+    {
+      field: "amountType",
+      headerName: "Amount type",
       flex: 1,
       disableClickEventBubbling: true,
     },
@@ -87,18 +99,6 @@ const Home = () => {
           <p>{params.row.amount}%</p>
         </styles.StyledSliderContainer>
       ),
-    },
-    {
-      field: "fullAmount",
-      headerName: "Full amount",
-      flex: 1,
-      disableClickEventBubbling: true,
-    },
-    {
-      field: "amountType",
-      headerName: "Amount type",
-      flex: 1,
-      disableClickEventBubbling: true,
     },
   ];
 
