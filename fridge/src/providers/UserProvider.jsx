@@ -10,6 +10,7 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     tokenId: null,
     userInfo: {},
+    loading: true,
   });
 
   useEffect(() => {
@@ -21,12 +22,13 @@ const UserProvider = ({ children }) => {
               setUser({
                 tokenId: idToken,
                 userInfo: userAuth,
+                loading: false,
               });
             })
             .catch(function (error) {
               console.log(error);
             })
-        : setUser({ tokenId: null, userInfo: userAuth });
+        : setUser({ tokenId: null, userInfo: userAuth, loading: false });
     });
   }, []);
 

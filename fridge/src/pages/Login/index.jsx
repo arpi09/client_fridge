@@ -45,50 +45,60 @@ const Login = () => {
     }
   }, [user, history]);
 
+  console.log(user);
+
   return (
-    <StyledLoginMainContainer>
-      <StyledLoginHeaderText>My fridge</StyledLoginHeaderText>
-      {error !== null && <div>{error}</div>}
-      <Input
-        type="email"
-        name="userEmail"
-        value={email}
-        placeholder="Email"
-        id="userEmail"
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <Input
-        type="password"
-        name="userPassword"
-        value={password}
-        placeholder="Password"
-        id="userPassword"
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <SignInButton
-        onClick={(event) => {
-          signInWithEmailAndPasswordHandler(event, email, password);
-        }}
-      />
-      <div
-        style={{
-          width: "15%",
-          borderTop: "1px solid #fff",
-          borderRadius: "5px",
-        }}
-      ></div>
-      <ThirdPartySignInButton
-        text="Sign in with Google"
-        icon={<FaGoogle />}
-        onClick={(event) => {
-          signInWithGoogleClick(event);
-        }}
-      />
-      <p style={{ color: "#fff" }}>
-        Don't have an account? <Link to="signUp">Sign up here</Link>
-      </p>
-      <Link to="passwordReset">Forgot Password?</Link>
-    </StyledLoginMainContainer>
+    <div style={{ height: "100%" }}>
+      {user.loading ? (
+        <StyledLoginMainContainer>
+          <div className="loader"></div>
+        </StyledLoginMainContainer>
+      ) : (
+        <StyledLoginMainContainer>
+          <StyledLoginHeaderText>My fridge</StyledLoginHeaderText>
+          {error !== null && <div>{error}</div>}
+          <Input
+            type="email"
+            name="userEmail"
+            value={email}
+            placeholder="Email"
+            id="userEmail"
+            onChange={(event) => onChangeHandler(event)}
+          />
+          <Input
+            type="password"
+            name="userPassword"
+            value={password}
+            placeholder="Password"
+            id="userPassword"
+            onChange={(event) => onChangeHandler(event)}
+          />
+          <SignInButton
+            onClick={(event) => {
+              signInWithEmailAndPasswordHandler(event, email, password);
+            }}
+          />
+          <div
+            style={{
+              width: "15%",
+              borderTop: "1px solid #fff",
+              borderRadius: "5px",
+            }}
+          ></div>
+          <ThirdPartySignInButton
+            text="Sign in with Google"
+            icon={<FaGoogle />}
+            onClick={(event) => {
+              signInWithGoogleClick(event);
+            }}
+          />
+          <p style={{ color: "#fff" }}>
+            Don't have an account? <Link to="signUp">Sign up here</Link>
+          </p>
+          <Link to="passwordReset">Forgot Password?</Link>
+        </StyledLoginMainContainer>
+      )}
+    </div>
   );
 };
 
