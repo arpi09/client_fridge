@@ -41,14 +41,28 @@ export const StyledHeaderInfo = styled.div`
   margin-right: 1.5rem;
 `;
 
-export const StyledheaderTitleContainer = styled.div`
+export const StyledHeaderTitleContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
 `;
 
-export const StyledheaderTitle = styled.h2`
+export const StyledGridHeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 80%;
+  padding: 10;
+`;
+
+export const StyledGridHeaderActionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+`;
+
+export const StyledHeaderTitle = styled.h2`
   font-size: 42px;
   margin-left: 2.5rem;
 `;
@@ -58,6 +72,20 @@ export const StyledAddButton = styled.button`
   width: 4rem;
   border-radius: 5px;
   border-width: 0px;
+`;
+
+export const StyledSelectFridge = styled.select`
+  border-width: 0px;
+  border-radius: 5px;
+  width: 15rem;
+  height: 3rem;
+  font-size: 18px;
+`;
+
+export const StyledDataGridContainer = styled.div`
+  display: flex;
+  width: 80%;
+  height: 50%;
 `;
 
 export const StyledSliderContainer = styled.div`

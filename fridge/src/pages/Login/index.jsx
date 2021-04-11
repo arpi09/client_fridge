@@ -43,7 +43,7 @@ const Login = () => {
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
       history.push("/start");
     }
-  }, [user]);
+  }, [user, history]);
 
   return (
     <StyledLoginMainContainer>

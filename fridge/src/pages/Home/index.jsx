@@ -6,15 +6,8 @@ import { SignOutButton } from "../../components/SignOutButton";
 import { Button } from "../../components/Button";
 import { AddGroceryModal } from "../../components/AddGroceryModal";
 import { auth } from "../../firebase";
-import {
-  StyledHomeMainContainer,
-  StyledHomeHeaderContainer,
-  StyledHomeImage,
-  StyledHeaderInfo,
-  StyledheaderTitleContainer,
-  StyledheaderTitle,
-  StyledSliderContainer,
-} from "./styles";
+import * as styles from "./styles";
+import * as constants from "./constants";
 import { DataGrid } from "@material-ui/data-grid";
 import moment from "moment";
 
@@ -52,7 +45,7 @@ const Home = () => {
       fridge.groceries.map((grocery) => {
         return {
           ...grocery,
-          bestBefore: moment(grocery.bestBefore).format("YYYY-MM-DD"),
+          bestBefore: moment(grocery.bestBefore).format(constants.DATE_FORMAT),
         };
       });
 
@@ -61,24 +54,24 @@ const Home = () => {
 
   const columns = [
     {
-      field: "name",
-      headerName: "Name",
+      field: constants.GRID_COLUMN_FIELD_NAME_NAME,
+      headerName: constants.GRID_COLUMN_HEADER_TITLE_NAME,
       flex: 1,
       disableClickEventBubbling: true,
     },
     {
-      field: "bestBefore",
-      headerName: "Best Before",
+      field: constants.GRID_COLUMN_FIELD_NAME_BEST_BEFORE,
+      headerName: constants.GRID_COLUMN_HEADER_TITLE_BEST_BEFORE,
       flex: 1,
       disableClickEventBubbling: true,
     },
     {
-      field: "slider",
-      headerName: "Slider",
+      field: constants.GRID_COLUMN_FIELD_NAME_SLIDER,
+      headerName: constants.GRID_COLUMN_HEADER_TITLE_SLIDER,
       flex: 1,
       disableClickEventBubbling: true,
       renderCell: (params) => (
-        <StyledSliderContainer>
+        <styles.StyledSliderContainer>
           <input
             type="range"
             min="1"
@@ -90,7 +83,7 @@ const Home = () => {
             className="slider"
           />
           <p>{params.row.amount}%</p>
-        </StyledSliderContainer>
+        </styles.StyledSliderContainer>
       ),
     },
   ];
@@ -103,7 +96,7 @@ const Home = () => {
   ) => {
     const newGrocery = {
       name: addModalNameText,
-      fullAmount: addModalFullAmountText,
+      fullAmount: parseInt(addModalFullAmountText, 10),
       amountType: addModalAmountTypetText,
       bestBefore: bestBeforeDate,
     };
@@ -140,7 +133,7 @@ const Home = () => {
   };
 
   return (
-    <StyledHomeMainContainer>
+    <styles.StyledHomeMainContainer>
       <AddGroceryModal
         display={displayAddModal}
         title="Add grocery"
@@ -160,38 +153,30 @@ const Home = () => {
         onClose={() => setDisplayAddModal()}
       />
       {userInfo !== null && (
-        <StyledHomeHeaderContainer>
-          <StyledheaderTitleContainer>
-            <StyledheaderTitle>My Fridge</StyledheaderTitle>
-          </StyledheaderTitleContainer>
-          <StyledHeaderInfo>
+        <styles.StyledHomeHeaderContainer>
+          <styles.StyledHeaderTitleContainer>
+            <styles.StyledHeaderTitle>My Fridge</styles.StyledHeaderTitle>
+          </styles.StyledHeaderTitleContainer>
+          <styles.StyledHeaderInfo>
             <h2 style={{ width: "max-content" }}>
               {userInfo.displayName === null
                 ? userInfo.email
                 : userInfo.displayName}
             </h2>
             {userInfo.photoURL && (
-              <StyledHomeImage src={userInfo.photoURL} alt="Profile Image" />
+              <styles.StyledHomeImage
+                src={userInfo.photoURL}
+                alt="Profile Image"
+              />
             )}
             <SignOutButton onClick={signOut} />
-          </StyledHeaderInfo>
-        </StyledHomeHeaderContainer>
+          </styles.StyledHeaderInfo>
+        </styles.StyledHomeHeaderContainer>
       )}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "80%",
-          padding: 10,
-        }}
-      >
-        <div
+      <styles.StyledGridHeaderContainer>
+        <styles.StyledGridHeaderActionContainer
           style={{
-            display: "flex",
-            alignItems: "flex-end",
             justifyContent: "flex-start",
-            width: "50%",
-            height: "100%",
           }}
         >
           <Button
@@ -207,26 +192,15 @@ const Home = () => {
             primary
             width="17"
           ></Button>
-        </div>
-        <div
+        </styles.StyledGridHeaderActionContainer>
+        <styles.StyledGridHeaderActionContainer
           style={{
-            display: "flex",
-            alignItems: "center",
             justifyContent: "flex-end",
-            width: "50%",
-            height: "100%",
           }}
         >
-          <select
+          <styles.StyledSelectFridge
             name="fridges"
             onChange={(e) => setFridge(e.target.value)}
-            style={{
-              borderWidth: "0px",
-              borderRadius: "5px",
-              width: "15rem",
-              height: "3rem",
-              fontSize: "18px",
-            }}
           >
             {fridges &&
               fridges.map((fridge) => {
@@ -236,16 +210,10 @@ const Home = () => {
                   </option>
                 );
               })}
-          </select>
-        </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "80%",
-          height: "50%",
-        }}
-      >
+          </styles.StyledSelectFridge>
+        </styles.StyledGridHeaderActionContainer>
+      </styles.StyledGridHeaderContainer>
+      <styles.StyledDataGridContainer>
         <DataGrid
           rows={groceries || []}
           columns={columns}
@@ -257,8 +225,8 @@ const Home = () => {
             setSelectedGroceries(newSelection.selectionModel);
           }}
         />
-      </div>
-    </StyledHomeMainContainer>
+      </styles.StyledDataGridContainer>
+    </styles.StyledHomeMainContainer>
   );
 };
 

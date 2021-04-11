@@ -15,6 +15,7 @@ const FridgeProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    let isMounted = true;
     auth.onAuthStateChanged((userAuth) => {
       userAuth &&
         userAuth
