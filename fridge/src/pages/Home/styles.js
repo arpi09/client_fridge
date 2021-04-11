@@ -52,7 +52,8 @@ export const StyledGridHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   width: 80%;
-  padding: 10;
+  padding: 5px;
+  margin-top: 5%;
 `;
 
 export const StyledGridHeaderActionContainer = styled.div`
@@ -80,12 +81,13 @@ export const StyledSelectFridge = styled.select`
   width: 15rem;
   height: 3rem;
   font-size: 18px;
+  margin: 0.5rem;
 `;
 
 export const StyledDataGridContainer = styled.div`
   display: flex;
   width: 80%;
-  height: 50%;
+  height: 75%;
 `;
 
 export const StyledSliderContainer = styled.div`
