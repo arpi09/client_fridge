@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { signInWithGoogle, auth } from "../../firebase";
 import { UserContext } from "../../providers/UserProvider";
@@ -41,6 +41,26 @@ const Login = () => {
     }
   };
 
+  const handleEnterPress = useCallback(
+    (event) => {
+      const { key } = event;
+
+      if (key === "Enter") {
+        signInWithEmailAndPasswordHandler(event);
+      }
+    },
+    [email, password]
+  );
+
+  // Add eventlistener to log in with enter
+  useEffect(() => {
+    window.addEventListener("keydown", handleEnterPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleEnterPress);
+    };
+  }, [handleEnterPress]);
+
   useEffect(() => {
     // If userinfo contains data direct user to start view
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
@@ -76,7 +96,7 @@ const Login = () => {
           />
           <SignInButton
             onClick={(event) => {
-              signInWithEmailAndPasswordHandler(event, email, password);
+              signInWithEmailAndPasswordHandler(event);
             }}
           />
           <div
