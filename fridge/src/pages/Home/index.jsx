@@ -145,100 +145,108 @@ const Home = () => {
   };
 
   return (
-    <styles.StyledHomeMainContainer>
-      <AddGroceryModal
-        display={displayAddModal}
-        title="Add grocery"
-        addFunction={(
-          addModalNameText,
-          addModalFullAmountText,
-          addModalAmountTypetText,
-          bestBeforeDate
-        ) =>
-          handleAddGrocery(
-            addModalNameText,
-            addModalFullAmountText,
-            addModalAmountTypetText,
-            bestBeforeDate
-          )
-        }
-        onClose={() => setDisplayAddModal()}
-      />
-      {userInfo !== null && (
-        <styles.StyledHomeHeaderContainer>
-          <styles.StyledHeaderTitleContainer>
-            <styles.StyledHeaderTitle>My Fridge</styles.StyledHeaderTitle>
-          </styles.StyledHeaderTitleContainer>
-          <styles.StyledHeaderInfo>
-            <h2 style={{ width: "max-content" }}>
-              {userInfo.displayName === null
-                ? userInfo.email
-                : userInfo.displayName}
-            </h2>
-            {userInfo.photoURL && (
-              <styles.StyledHomeImage
-                src={userInfo.photoURL}
-                alt="Profile Image"
-              />
-            )}
-            <SignOutButton onClick={signOut} />
-          </styles.StyledHeaderInfo>
-        </styles.StyledHomeHeaderContainer>
+    <div style={{ height: "100%" }}>
+      {user.loading ? (
+        <styles.StyledHomeMainContainer>
+          <div className="loader"></div>
+        </styles.StyledHomeMainContainer>
+      ) : (
+        <styles.StyledHomeMainContainer>
+          <AddGroceryModal
+            display={displayAddModal}
+            title="Add grocery"
+            addFunction={(
+              addModalNameText,
+              addModalFullAmountText,
+              addModalAmountTypetText,
+              bestBeforeDate
+            ) =>
+              handleAddGrocery(
+                addModalNameText,
+                addModalFullAmountText,
+                addModalAmountTypetText,
+                bestBeforeDate
+              )
+            }
+            onClose={() => setDisplayAddModal()}
+          />
+          {userInfo !== null && (
+            <styles.StyledHomeHeaderContainer>
+              <styles.StyledHeaderTitleContainer>
+                <styles.StyledHeaderTitle>My Fridge</styles.StyledHeaderTitle>
+              </styles.StyledHeaderTitleContainer>
+              <styles.StyledHeaderInfo>
+                <h2 style={{ width: "max-content" }}>
+                  {userInfo.displayName === null
+                    ? userInfo.email
+                    : userInfo.displayName}
+                </h2>
+                {userInfo.photoURL && (
+                  <styles.StyledHomeImage
+                    src={userInfo.photoURL}
+                    alt="Profile Image"
+                  />
+                )}
+                <SignOutButton onClick={signOut} />
+              </styles.StyledHeaderInfo>
+            </styles.StyledHomeHeaderContainer>
+          )}
+          <styles.StyledGridHeaderContainer>
+            <styles.StyledGridHeaderActionContainer
+              style={{
+                justifyContent: "flex-start",
+              }}
+            >
+              <Button
+                onClick={() => handleDeleteGroceries()}
+                text="Delete"
+                remove
+                disabled={selectedGroceries.length === 0}
+                width="5"
+              ></Button>
+              <Button
+                onClick={() => setDisplayAddModal(true)}
+                text="Add"
+                primary
+                width="17"
+              ></Button>
+            </styles.StyledGridHeaderActionContainer>
+            <styles.StyledGridHeaderActionContainer
+              style={{
+                justifyContent: "flex-end",
+              }}
+            >
+              <styles.StyledSelectFridge
+                name="fridges"
+                onChange={(e) => setFridge(e.target.value)}
+              >
+                {fridges &&
+                  fridges.map((fridge) => {
+                    return (
+                      <option key={fridge.id} value={fridge.id}>
+                        {fridge.name}
+                      </option>
+                    );
+                  })}
+              </styles.StyledSelectFridge>
+            </styles.StyledGridHeaderActionContainer>
+          </styles.StyledGridHeaderContainer>
+          <styles.StyledDataGridContainer>
+            <DataGrid
+              rows={groceries || []}
+              columns={columns}
+              pageSize={5}
+              checkboxSelection
+              autoPageSize
+              loading={loading}
+              onSelectionModelChange={(newSelection) => {
+                setSelectedGroceries(newSelection.selectionModel);
+              }}
+            />
+          </styles.StyledDataGridContainer>
+        </styles.StyledHomeMainContainer>
       )}
-      <styles.StyledGridHeaderContainer>
-        <styles.StyledGridHeaderActionContainer
-          style={{
-            justifyContent: "flex-start",
-          }}
-        >
-          <Button
-            onClick={() => handleDeleteGroceries()}
-            text="Delete"
-            remove
-            disabled={selectedGroceries.length === 0}
-            width="5"
-          ></Button>
-          <Button
-            onClick={() => setDisplayAddModal(true)}
-            text="Add"
-            primary
-            width="17"
-          ></Button>
-        </styles.StyledGridHeaderActionContainer>
-        <styles.StyledGridHeaderActionContainer
-          style={{
-            justifyContent: "flex-end",
-          }}
-        >
-          <styles.StyledSelectFridge
-            name="fridges"
-            onChange={(e) => setFridge(e.target.value)}
-          >
-            {fridges &&
-              fridges.map((fridge) => {
-                return (
-                  <option key={fridge.id} value={fridge.id}>
-                    {fridge.name}
-                  </option>
-                );
-              })}
-          </styles.StyledSelectFridge>
-        </styles.StyledGridHeaderActionContainer>
-      </styles.StyledGridHeaderContainer>
-      <styles.StyledDataGridContainer>
-        <DataGrid
-          rows={groceries || []}
-          columns={columns}
-          pageSize={5}
-          checkboxSelection
-          autoPageSize
-          loading={loading}
-          onSelectionModelChange={(newSelection) => {
-            setSelectedGroceries(newSelection.selectionModel);
-          }}
-        />
-      </styles.StyledDataGridContainer>
-    </styles.StyledHomeMainContainer>
+    </div>
   );
 };
 

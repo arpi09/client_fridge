@@ -5,7 +5,7 @@ import { UserContext } from "../../providers/UserProvider";
 import { Input } from "../../components/Input";
 import { SignInButton } from "../../components/SignInButton";
 import { ThirdPartySignInButton } from "../../components/ThirdPartySignInButton";
-import { StyledLoginMainContainer, StyledLoginHeaderText } from "./styles";
+import * as styles from "./styles";
 import { FaGoogle } from "react-icons/fa";
 
 const Login = () => {
@@ -71,12 +71,12 @@ const Login = () => {
   return (
     <div style={{ height: "100%" }}>
       {user.loading ? (
-        <StyledLoginMainContainer>
+        <styles.StyledLoginMainContainer>
           <div className="loader"></div>
-        </StyledLoginMainContainer>
+        </styles.StyledLoginMainContainer>
       ) : (
-        <StyledLoginMainContainer>
-          <StyledLoginHeaderText>My fridge</StyledLoginHeaderText>
+        <styles.StyledLoginMainContainer>
+          <styles.StyledLoginHeaderText>My fridge</styles.StyledLoginHeaderText>
           {error !== null && <div>{error}</div>}
           <Input
             type="email"
@@ -117,7 +117,7 @@ const Login = () => {
             Don't have an account? <Link to="signUp">Sign up here</Link>
           </p>
           <Link to="passwordReset">Forgot Password?</Link>
-        </StyledLoginMainContainer>
+        </styles.StyledLoginMainContainer>
       )}
     </div>
   );
