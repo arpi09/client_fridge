@@ -19,7 +19,7 @@ const Login = () => {
     event.preventDefault();
 
     auth.signInWithEmailAndPassword(email, password).catch((error) => {
-      setError("Error signing in with password and email!");
+      setError("Wrong password or username!");
     });
   };
 
@@ -34,12 +34,15 @@ const Login = () => {
 
     if (name === "userEmail") {
       setEmail(value);
-    } else if (name === "userPassword") {
+    }
+
+    if (name === "userPassword") {
       setPassword(value);
     }
   };
 
   useEffect(() => {
+    // If userinfo contains data direct user to start view
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
       history.push("/start");
     }
