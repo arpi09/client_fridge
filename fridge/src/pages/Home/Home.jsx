@@ -39,8 +39,6 @@ const Home = () => {
 
   const [selectedGroceries, setSelectedGroceries] = useState([]);
 
-  console.log(userInfo);
-
   useEffect(() => {
     if (userInfo === null) {
       history.push("/");

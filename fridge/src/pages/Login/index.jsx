@@ -45,8 +45,6 @@ const Login = () => {
     }
   }, [user, history]);
 
-  console.log(user);
-
   return (
     <div style={{ height: "100%" }}>
       {user.loading ? (

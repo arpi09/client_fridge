@@ -52,8 +52,6 @@ const Home = () => {
     setGroceries(fridge.groceries);
   }, [fridge]);
 
-  console.log(groceries);
-
   const columns = [
     {
       field: constants.GRID_COLUMN_FIELD_NAME_NAME,
