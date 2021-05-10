@@ -113,10 +113,6 @@ const Login = () => {
               signInWithGoogleClick(event);
             }}
           />
-          <p style={{ color: "#fff" }}>
-            Don't have an account? <Link to="signUp">Sign up here</Link>
-          </p>
-          <Link to="passwordReset">Forgot Password?</Link>
         </styles.StyledLoginMainContainer>
       )}
     </div>

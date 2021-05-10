@@ -25,7 +25,11 @@ const Home = () => {
   const { userInfo } = user || {
     userInfo: { displayName: "", email: "", photoURL: "" },
   };
-  const { fridge, fridges, loading } = fridgeData;
+  const { fridge, fridges, loading } = fridgeData || {
+    fridge: {},
+    fridges: [],
+    loading: false,
+  };
 
   const [groceries, setGroceries] = useState([]);
 
