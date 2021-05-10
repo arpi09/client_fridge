@@ -11,7 +11,7 @@ fridge/.pnp.js
 /coverage
 
 # production
-/build
+fridge/build
 
 # misc
 fridge/.DS_Store
@@ -24,3 +24,7 @@ fridge/.env.production.local
 fridge/npm-debug.log*
 fridge/yarn-debug.log*
 fridge/yarn-error.log*
+
+fridge/.firebaserc
+fridge/firebase.json
+fridge/build
