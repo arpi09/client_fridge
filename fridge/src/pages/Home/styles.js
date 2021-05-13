@@ -11,6 +11,27 @@ export const StyledHomeMainContainer = styled.div`
   .MuiDataGrid-root {
     background-color: #fff;
   }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+  }
+
+  .loader::after {
+    content: "";
+    width: 100px;
+    height: 100px;
+    border: 10px solid transparent;
+    border-top-color: #564466;
+    border-radius: 100%;
+    animation: loader 1.5s ease infinite;
+  }
+
+  @keyframes loader {
+    to {
+      transform: rotate(2turn);
+    }
+  }
 `;
 
 export const StyledHomeHeaderContainer = styled.div`

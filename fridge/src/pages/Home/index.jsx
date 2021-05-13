@@ -125,9 +125,12 @@ const Home = () => {
     updateGrocery(grocery);
   };
 
+  const userNotLoggedIn =
+    user.loading || !user.userInfo || Object.keys(user.userInfo).length === 0;
+
   return (
     <div style={{ height: "100%" }}>
-      {user.loading ? (
+      {userNotLoggedIn ? (
         <styles.StyledHomeMainContainer>
           <div className="loader"></div>
         </styles.StyledHomeMainContainer>

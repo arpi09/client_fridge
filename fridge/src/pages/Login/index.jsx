@@ -69,11 +69,14 @@ const Login = () => {
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
       history.push("/start");
     }
-  }, [user, history]);
+  }, [user.userInfo, history]);
+
+  const userAlreadyLoggedIn =
+    user.loading || (user.userInfo && Object.keys(user.userInfo).length !== 0);
 
   return (
     <div style={{ height: "100%" }}>
-      {user.loading ? (
+      {userAlreadyLoggedIn ? (
         <styles.StyledLoginMainContainer>
           <div className="loader"></div>
         </styles.StyledLoginMainContainer>
