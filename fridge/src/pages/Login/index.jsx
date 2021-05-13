@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { signInWithGoogle, auth } from "../../firebase";
 import { UserContext } from "../../providers/UserProvider";
+import { FridgeContext } from "../../providers/FridgeProvider";
 import { Input } from "../../components/Input";
 import { SignInButton } from "../../components/SignInButton";
 import { ThirdPartySignInButton } from "../../components/ThirdPartySignInButton";
@@ -15,6 +16,7 @@ const Login = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const history = useHistory();
   const { user, toggleLoading } = useContext(UserContext);
+  const { fridgeData } = useContext(FridgeContext);
 
   const signInWithEmailAndPasswordHandler = useCallback(() => {
     setLoginLoading(true);
@@ -64,11 +66,21 @@ const Login = () => {
   }, [handleEnterPress]);
 
   useEffect(() => {
-    // If userinfo contains data direct user to start view
-    if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
+    const userLoggedIn =
+      user.userInfo && Object.keys(user.userInfo).length !== 0;
+    const userOwnsFridge = fridgeData.fridges.length !== 0;
+
+    console.log(userLoggedIn && userOwnsFridge);
+    // If userinfo contains data and user has one or more fridges, direct user to start view
+    if (userLoggedIn && userOwnsFridge) {
       history.push("/home");
     }
-  }, [user.userInfo, history]);
+
+    // If userinfo contains data and user has no fridges, direct user to welcome view
+    else if (userLoggedIn && !userOwnsFridge) {
+      history.push("/welcome");
+    }
+  }, [user.userInfo, history, fridgeData]);
 
   const userAlreadyLoggedIn =
     user.loading || (user.userInfo && Object.keys(user.userInfo).length !== 0);
@@ -77,7 +89,7 @@ const Login = () => {
     <div style={{ height: "100%" }}>
       {userAlreadyLoggedIn ? (
         <styles.StyledLoginMainContainer>
-          <div className="loader"></div>
+          <div className="loginLoader"></div>
         </styles.StyledLoginMainContainer>
       ) : (
         <styles.StyledLoginMainContainer>

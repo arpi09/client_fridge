@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 export const StyledLoginMainContainer = styled.div`
   display: flex;
@@ -8,22 +8,22 @@ export const StyledLoginMainContainer = styled.div`
   justify-content: center;
   background-color: #92b39e;
 
-  .loader {
+  .loginLoader {
     display: flex;
     justify-content: center;
   }
 
-  .loader::after {
+  .loginLoader::after {
     content: "";
     width: 100px;
     height: 100px;
     border: 10px solid transparent;
     border-top-color: #564466;
     border-radius: 100%;
-    animation: loader 1.5s ease infinite;
+    animation: loginLoader 1.5s ease infinite;
   }
 
-  @keyframes loader {
+  @keyframes loginLoader {
     to {
       transform: rotate(2turn);
     }

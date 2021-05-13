@@ -132,7 +132,7 @@ const Home = () => {
     <div style={{ height: "100%" }}>
       {userNotLoggedIn ? (
         <styles.StyledHomeMainContainer>
-          <div className="loader"></div>
+          <div className=""></div>
         </styles.StyledHomeMainContainer>
       ) : (
         <styles.StyledHomeMainContainer>
