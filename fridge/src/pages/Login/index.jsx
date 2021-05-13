@@ -66,7 +66,7 @@ const Login = () => {
   useEffect(() => {
     // If userinfo contains data direct user to start view
     if (user.userInfo && Object.keys(user.userInfo).length !== 0) {
-      history.push("/start");
+      history.push("/home");
     }
   }, [user.userInfo, history]);
 

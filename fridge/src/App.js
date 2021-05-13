@@ -11,7 +11,7 @@ function App() {
       <Router>
         <div style={{ height: "100vh" }}>
           <Switch>
-            <Route path="/start">
+            <Route path="/home">
               <FridgeProvider>
                 <Home />
               </FridgeProvider>
