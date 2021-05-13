@@ -15,7 +15,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
   const history = useHistory();
-  const { user, toggleLoading } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { fridgeData } = useContext(FridgeContext);
 
   const signInWithEmailAndPasswordHandler = useCallback(() => {
@@ -25,7 +25,7 @@ const Login = () => {
       setLoginLoading(false);
       setError("Wrong password or username!");
     });
-  }, [email, password, toggleLoading]);
+  }, [email, password, setLoginLoading]);
 
   const signInWithGoogleClick = (event) => {
     event.preventDefault();

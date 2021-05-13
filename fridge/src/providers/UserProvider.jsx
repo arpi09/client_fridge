@@ -32,17 +32,8 @@ const UserProvider = ({ children }) => {
     });
   }, []);
 
-  const toggleLoading = () => {
-    setUser((oldUser) => ({
-      ...oldUser,
-      loading: !user.loading,
-    }));
-  };
-
   return (
-    <UserContext.Provider value={{ user, toggleLoading }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
 };
 export default UserProvider;
