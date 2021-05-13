@@ -12,19 +12,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loginLoading, setLoginLoading] = useState(false);
   const history = useHistory();
-  const user = useContext(UserContext);
+  const { user, toggleLoading } = useContext(UserContext);
 
-  const signInWithEmailAndPasswordHandler = useCallback(
-    (event) => {
-      event.preventDefault();
+  const signInWithEmailAndPasswordHandler = useCallback(() => {
+    setLoginLoading(true);
 
-      auth.signInWithEmailAndPassword(email, password).catch((error) => {
-        setError("Wrong password or username!");
-      });
-    },
-    [email, password]
-  );
+    auth.signInWithEmailAndPassword(email, password).catch(() => {
+      setLoginLoading(false);
+      setError("Wrong password or username!");
+    });
+  }, [email, password, toggleLoading]);
 
   const signInWithGoogleClick = (event) => {
     event.preventDefault();
@@ -104,6 +103,7 @@ const Login = () => {
             onClick={(event) => {
               signInWithEmailAndPasswordHandler(event);
             }}
+            loading={loginLoading}
           />
           <div
             style={{

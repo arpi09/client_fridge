@@ -32,6 +32,17 @@ const UserProvider = ({ children }) => {
     });
   }, []);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const toggleLoading = () => {
+    setUser((oldUser) => ({
+      ...oldUser,
+      loading: !user.loading,
+    }));
+  };
+
+  return (
+    <UserContext.Provider value={{ user, toggleLoading }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 export default UserProvider;

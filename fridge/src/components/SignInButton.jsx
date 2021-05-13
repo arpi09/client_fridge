@@ -25,12 +25,35 @@ const StyledInnerContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  .loader {
+    display: flex;
+    justify-content: center;
+  }
+
+  .loader::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+    border-radius: 100%;
+    animation: loader 1.5s ease infinite;
+  }
+
+  @keyframes loader {
+    to {
+      transform: rotate(2turn);
+    }
+  }
 `;
 
-export const SignInButton = ({ onClick }) => {
+export const SignInButton = ({ onClick, loading }) => {
   return (
     <StyledButton onClick={onClick}>
-      <StyledInnerContainer>Sign in</StyledInnerContainer>
+      <StyledInnerContainer>
+        {loading ? <div className="loader"></div> : "Log in"}
+      </StyledInnerContainer>
     </StyledButton>
   );
 };

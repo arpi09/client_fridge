@@ -14,7 +14,7 @@ import moment from "moment";
 const Home = () => {
   const history = useHistory();
 
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const {
     fridgeData,
     setFridge,
