@@ -26,12 +26,12 @@ const StyledInnerContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  .loader {
+  .sigInloader {
     display: flex;
     justify-content: center;
   }
 
-  .loader::after {
+  .sigInloader::after {
     content: "";
     width: 20px;
     height: 20px;
@@ -41,7 +41,7 @@ const StyledInnerContainer = styled.div`
     animation: loader 1.5s ease infinite;
   }
 
-  @keyframes loader {
+  @keyframes sigInloader {
     to {
       transform: rotate(2turn);
     }
@@ -52,7 +52,7 @@ export const SignInButton = ({ onClick, loading }) => {
   return (
     <StyledButton onClick={onClick}>
       <StyledInnerContainer>
-        {loading ? <div className="loader"></div> : "Log in"}
+        {loading ? <div className="sigInloader"></div> : "Log in"}
       </StyledInnerContainer>
     </StyledButton>
   );
