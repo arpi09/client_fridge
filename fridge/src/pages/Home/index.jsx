@@ -37,12 +37,14 @@ const Home = () => {
 
   const [selectedGroceries, setSelectedGroceries] = useState([]);
 
+  // Effect which directs to login page if user is not logged in
   useEffect(() => {
     if (userInfo === null) {
       history.push("/");
     }
   }, [history, userInfo]);
 
+  // Format best before dates for groceries
   useEffect(() => {
     fridge.groceries =
       fridge.groceries &&
@@ -56,31 +58,9 @@ const Home = () => {
     setGroceries(fridge.groceries);
   }, [fridge]);
 
+  // Add slider column
   const columns = [
-    {
-      field: constants.GRID_COLUMN_FIELD_NAME_NAME,
-      headerName: constants.GRID_COLUMN_HEADER_TITLE_NAME,
-      flex: 1,
-      disableClickEventBubbling: true,
-    },
-    {
-      field: constants.GRID_COLUMN_FIELD_NAME_BEST_BEFORE,
-      headerName: constants.GRID_COLUMN_HEADER_TITLE_BEST_BEFORE,
-      flex: 1,
-      disableClickEventBubbling: true,
-    },
-    {
-      field: "fullAmount",
-      headerName: "Full amount",
-      flex: 1,
-      disableClickEventBubbling: true,
-    },
-    {
-      field: "amountType",
-      headerName: "Amount type",
-      flex: 1,
-      disableClickEventBubbling: true,
-    },
+    ...constants.GROCERIES_TABLE_COLUMNS,
     {
       field: constants.GRID_COLUMN_FIELD_NAME_SLIDER,
       headerName: constants.GRID_COLUMN_HEADER_TITLE_SLIDER,
@@ -129,10 +109,12 @@ const Home = () => {
   const handleSliderChanged = (value, id) => {
     const grocery = { amount: parseInt(value, 10), id: id };
 
+    // Find updated grocery index in groceries
     const updatedGroceryIndex = groceries.findIndex((grocery) => {
       return grocery.id === id;
     });
 
+    // Update groceries with new value of slider
     let tempArray = [...groceries];
     tempArray[updatedGroceryIndex] = {
       ...tempArray[updatedGroceryIndex],
@@ -140,12 +122,7 @@ const Home = () => {
     };
 
     setGroceries(tempArray);
-
     updateGrocery(grocery);
-  };
-
-  const signOut = () => {
-    auth.signOut();
   };
 
   return (
@@ -191,7 +168,7 @@ const Home = () => {
                     alt="Profile Image"
                   />
                 )}
-                <SignOutButton onClick={signOut} />
+                <SignOutButton onClick={() => auth.signOut()} />
               </styles.StyledHeaderInfo>
             </styles.StyledHomeHeaderContainer>
           )}

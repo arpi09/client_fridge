@@ -77,7 +77,7 @@ const Login = () => {
       ) : (
         <styles.StyledLoginMainContainer>
           <styles.StyledLoginHeaderText>My fridge</styles.StyledLoginHeaderText>
-          {error !== null && <div>{error}</div>}
+          {error && <div>{error}</div>}
           <Input
             type="email"
             name="userEmail"
