@@ -28,8 +28,8 @@ const StyledInnerContainer = styled.div`
 
 export const SignOutButton = ({ onClick }) => {
   return (
-    <StyledButton onClick={onClick}>
-      <StyledInnerContainer>Sign out</StyledInnerContainer>
+    <StyledButton onClick={onClick} title="Logout">
+      <StyledInnerContainer>Logout</StyledInnerContainer>
     </StyledButton>
   );
 };

@@ -50,9 +50,9 @@ const StyledInnerContainer = styled.div`
 
 export const SignInButton = ({ onClick, loading }) => {
   return (
-    <StyledButton onClick={onClick}>
+    <StyledButton onClick={onClick} title="Login">
       <StyledInnerContainer>
-        {loading ? <div className="sigInloader"></div> : "Log in"}
+        {loading ? <div className="sigInloader"></div> : "Login"}
       </StyledInnerContainer>
     </StyledButton>
   );
