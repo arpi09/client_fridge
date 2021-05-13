@@ -33,3 +33,10 @@ export const StyledLoginMainContainer = styled.div`
 export const StyledLoginHeaderText = styled.h1`
   margin-bottom: 5rem;
 `;
+
+export const StyledErrorDiv = styled.div`
+  background-color: #ff3b3b;
+  border-radius: 5px;
+  padding: 8px;
+  color: #fff;
+`;

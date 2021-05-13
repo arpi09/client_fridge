@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { signInWithGoogle, auth } from "../../firebase";
 import { UserContext } from "../../providers/UserProvider";
 import { Input } from "../../components/Input";
@@ -15,13 +15,16 @@ const Login = () => {
   const history = useHistory();
   const user = useContext(UserContext);
 
-  const signInWithEmailAndPasswordHandler = (event) => {
-    event.preventDefault();
+  const signInWithEmailAndPasswordHandler = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    auth.signInWithEmailAndPassword(email, password).catch((error) => {
-      setError("Wrong password or username!");
-    });
-  };
+      auth.signInWithEmailAndPassword(email, password).catch((error) => {
+        setError("Wrong password or username!");
+      });
+    },
+    [email, password]
+  );
 
   const signInWithGoogleClick = (event) => {
     event.preventDefault();
@@ -49,7 +52,7 @@ const Login = () => {
         signInWithEmailAndPasswordHandler(event);
       }
     },
-    [email, password]
+    [signInWithEmailAndPasswordHandler]
   );
 
   // Add eventlistener to log in with enter
@@ -77,7 +80,7 @@ const Login = () => {
       ) : (
         <styles.StyledLoginMainContainer>
           <styles.StyledLoginHeaderText>My fridge</styles.StyledLoginHeaderText>
-          {error && <div>{error}</div>}
+          {error && <styles.StyledErrorDiv>{error}</styles.StyledErrorDiv>}
           <Input
             type="email"
             name="userEmail"
