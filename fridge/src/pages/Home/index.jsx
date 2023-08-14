@@ -8,7 +8,7 @@ import { AddGroceryModal } from "../../components/AddGroceryModal";
 import { auth } from "../../firebase";
 import * as styles from "./styles";
 import * as constants from "./constants";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
 
 const Home = () => {
