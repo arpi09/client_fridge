@@ -68,18 +68,17 @@ const Login = () => {
   useEffect(() => {
     const userLoggedIn =
       user.userInfo && Object.keys(user.userInfo).length !== 0;
-    const userOwnsFridge = fridgeData.fridges.length !== 0;
+    // const userOwnsFridge = fridgeData.fridges.length !== 0;
 
-    console.log(userLoggedIn && userOwnsFridge);
     // If userinfo contains data and user has one or more fridges, direct user to start view
-    if (userLoggedIn && userOwnsFridge) {
+    if (userLoggedIn) {
       history.push("/home");
     }
 
     // If userinfo contains data and user has no fridges, direct user to welcome view
-    else if (userLoggedIn && !userOwnsFridge) {
-      history.push("/welcome");
-    }
+    // else if (userLoggedIn && !userOwnsFridge) {
+    //   history.push("/welcome");
+    // }
   }, [user.userInfo, history, fridgeData]);
 
   const userAlreadyLoggedIn =

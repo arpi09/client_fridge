@@ -121,7 +121,6 @@ const Home = () => {
       amount: parseInt(value, 10),
     };
 
-    setGroceries(tempArray);
     updateGrocery(grocery);
   };
 
